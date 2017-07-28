@@ -1,5 +1,6 @@
 require_relative "../config/environment.rb"
 require 'active_support/inflector'
+require 'pry'
 
 class InteractiveRecord
 
@@ -16,14 +17,17 @@ class InteractiveRecord
     column_names = []
     table_info.each do |row|
       column_names << row["name"]
+      #binding.pry
     end
     column_names.compact
+    #binding.pry
   end
 
   def initialize(options={})
     options.each do |property, value|
       self.send("#{property}=", value)
     end
+    #binding.pry
   end
 
   def save
@@ -34,14 +38,18 @@ class InteractiveRecord
 
   def table_name_for_insert
     self.class.table_name
+    #the table is created for the entire class, this method allows the instance to be inserted into the table
+    #binding.pry
   end
 
   def values_for_insert
     values = []
     self.class.column_names.each do |col_name|
       values << "'#{send(col_name)}'" unless send(col_name).nil?
+      binding.pry
     end
     values.join(", ")
+    #binding.pry
   end
 
   def col_names_for_insert
